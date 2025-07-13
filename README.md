@@ -1,4 +1,4 @@
-# Wayland Terminal Screenshotter <wl-termshot>
+# Wayland Terminal Screenshotter (wl-termshot)
 
 A screenshot tool for Wayland that uses TUI to configure screenshot options.
 
@@ -9,7 +9,7 @@ Just type `wl-termshot` and you can start taking screenshot! Screenshots would b
 ## Features
 - Select a specific area to take screenshot
 - Option to choose if wl-termshot copy screenshot to clipboard for every screenshot
-- Option to let screenshot saved to /tmp
+- Option to save screenshot to /tmp
 - Option to customize screenshot file name (default is screen_YYYY-MM-DD-hh:mm:ss.png)
 
 ## Limitation
@@ -17,21 +17,21 @@ Just type `wl-termshot` and you can start taking screenshot! Screenshots would b
 Only supports Linux now. Tested on Hyprland with Arch Linux.
 
 ## Roadmap
-[] Add "--help" and stuff like that
-[] Prevent panicing when dependencies are not installed
-[] Use a environment variable other than $GRIM_DEFAULT_DIR
-[] Save current directory when environment variables are not set
-[] Make error looks nicer
-[] Freeze screen using `hyprpicker`
-[] Support different image format 
-[] Maybe use TUI library other than Cursive for better looking
-[] Add CLI interface, perhaps using Clap
-[] Support X11 and other platforms (low prir)
+- [] Add "--help" and stuff like that
+- [] Prevent panicing when dependencies are not installed
+- [] Use a environment variable other than $GRIM_DEFAULT_DIR
+- [] Save current directory when environment variables are not set
+- [] Make error looks nicer
+- [] Freeze screen using `hyprpicker`
+- [] Support different image format 
+- [] Maybe use TUI library other than Cursive for better looking
+- [] Add CLI interface, perhaps using Clap
+- [] Support X11 and other platforms (low priority)
 
 ## Dependencies
 - `grim` for taking screenshot
 - `setsid` for generating process (should be provided on Linux)
-- `libnotify`
+- `libnotify` for sending notification
 - `slurp` for selecting area [Optional]
 - `wl-clipboard` for copying screenshot [Optional]
 
