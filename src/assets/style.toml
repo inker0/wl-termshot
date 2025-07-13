@@ -2,7 +2,6 @@ shadow = true
 borders = "simple"
 
 [colors]
-
 background = "default"
 view = "default"
 primary = "dark white"
@@ -10,11 +9,24 @@ title_primary = "light blue"
 secondary = "light blue"
 tertiary = "white"
 highlight = "dark blue"
+highlight_text = "white"
+
+[styles.title_primary]
+effects = ["bold"]
+front = "light blue"
+back = "black"
 
 [styles.highlight]
 effects = ["bold"]
 front = "dark blue"
+back = "inherit_parent"
+
+[styles.editable_text]
+effects = []
+front = "white"
+back = "black"
 
 [styles.editable_text_cursor]
 effects = ["reverse", "underline"]
 front = "light blue"
+back = "inherit_parent"

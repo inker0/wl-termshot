@@ -2,6 +2,8 @@ use chrono::{Datelike, Local, Timelike};
 use cursive::{
     Cursive, CursiveExt,
     event::Key,
+    theme::Effect,
+    utils::markup::StyledString,
     view::{Nameable, Resizable},
     views::{Checkbox, Dialog, DummyView, EditView, LinearLayout, TextView},
 };
@@ -65,7 +67,10 @@ fn main() {
 
     let subtitle = LinearLayout::horizontal()
         .child(DummyView.full_width())
-        .child(TextView::new("<wl-termshot>"))
+        .child(TextView::new(StyledString::styled(
+            "<wl-termshot>",
+            Effect::Italic,
+        )))
         .child(DummyView.full_width());
 
     let guide = TextView::new("<q> - Quit\n<Esc> - Confirm and exit");
@@ -88,7 +93,12 @@ fn main() {
     let file_name = LinearLayout::horizontal()
         .child(TextView::new("File name"))
         .child(DummyView.full_width())
-        .child(EditView::new().with_name("filename").min_width(15));
+        .child(
+            EditView::new()
+                .filler(' ')
+                .with_name("filename")
+                .min_width(15),
+        );
 
     let dialog = Dialog::around(
         LinearLayout::vertical()
@@ -101,7 +111,7 @@ fn main() {
             .child(file_name),
     )
     .title("Wayland Terminal Screenshotter")
-    .button("confirm", confirm_exit)
+    .button(StyledString::styled("confirm", Effect::Bold), confirm_exit)
     .with_name("dialog")
     .fixed_width(60);
 
