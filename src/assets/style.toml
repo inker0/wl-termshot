@@ -1,0 +1,20 @@
+shadow = true
+borders = "simple"
+
+[colors]
+
+background = "default"
+view = "default"
+primary = "dark white"
+title_primary = "light blue"
+secondary = "light blue"
+tertiary = "white"
+highlight = "dark blue"
+
+[styles.highlight]
+effects = ["bold"]
+front = "dark blue"
+
+[styles.editable_text_cursor]
+effects = ["reverse", "underline"]
+front = "light blue"
