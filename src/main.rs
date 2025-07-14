@@ -18,6 +18,7 @@ const GET_USER_DATA_EXPECT_MSG: &'static str = "Should be able to get user data"
 struct State {
     fullscreen: bool,
     temp: bool,
+    slient: bool,
     copy_to_clipboard: bool,
     file_name: String,
     confirmed: bool,
@@ -28,6 +29,7 @@ impl State {
         Self {
             fullscreen: false,
             temp: false,
+            slient: false,
             copy_to_clipboard: true,
             file_name: String::new(),
             confirmed: false,
@@ -49,6 +51,10 @@ fn set_temporary(cursive: &mut Cursive, temp: bool) {
 
 fn set_copy(cursive: &mut Cursive, copy: bool) {
     get_user_data(cursive).copy_to_clipboard = copy;
+}
+
+fn set_slient(cursive: &mut Cursive, slient: bool) {
+    get_user_data(cursive).slient = slient;
 }
 
 fn confirm_exit(cursive: &mut Cursive) {
@@ -85,6 +91,11 @@ fn main() {
         .child(DummyView.full_width())
         .child(Checkbox::new().on_change(set_temporary));
 
+    let slient_checkbox = LinearLayout::horizontal()
+        .child(TextView::new("Slient?"))
+        .child(DummyView.full_width())
+        .child(Checkbox::new().on_change(set_slient));
+
     let copy_checkbox = LinearLayout::horizontal()
         .child(TextView::new("Copy to clipboard?"))
         .child(DummyView.full_width())
@@ -107,6 +118,7 @@ fn main() {
             .child(DummyView)
             .child(fullscreen_checkbox)
             .child(temp_checkbox)
+            .child(slient_checkbox)
             .child(copy_checkbox)
             .child(file_name),
     )
@@ -150,13 +162,18 @@ fn run_command(state: State) {
             time.second()
         );
     }
+
     let grim_dir_env = if !state.temp {
         std::env::var("GRIM_DEFAULT_DIR").unwrap_or(".".to_string())
     } else {
         temp_dir().display().to_string()
     };
     let grim_dir = grim_dir_env.trim_end_matches('/');
-    let grim_args = if state.fullscreen { "" } else { "-g (slurp)" };
+    let grim_args = if state.fullscreen {
+        ""
+    } else {
+        "-g \"$(slurp)\""
+    };
     let copy_command = if state.copy_to_clipboard {
         format!("wl-copy <{grim_dir}/{file_name}.png")
     } else {
@@ -167,12 +184,19 @@ fn run_command(state: State) {
     } else {
         "done"
     };
+    let notify_command = if state.slient {
+        "echo".to_string()
+    } else {
+        format!(
+            "notify-send -i \"{grim_dir}/{file_name}.png\" -a \"Screenshotter\" \"Screenshot {notify_msg}!\" \"Saved in {grim_dir}/{file_name}.png.\""
+        )
+    };
     let command = format!(
-        "sleep 1; grim {grim_args} {grim_dir}/{file_name}.png; notify-send -i \"{grim_dir}/{file_name}.png\" -a \"Screenshotter\" \"Screenshot {notify_msg}!\" \"Saved in {grim_dir}/{file_name}.png.\"; {copy_command}"
+        "sleep 1; grim {grim_args} {grim_dir}/{file_name}.png; {notify_command}; {copy_command}"
     );
     Command::new("setsid")
         .arg("-f")
-        .arg("fish")
+        .arg("sh")
         .arg("-c")
         .arg(command)
         .stdout(Stdio::null())
