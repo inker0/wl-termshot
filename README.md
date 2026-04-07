@@ -4,7 +4,7 @@ A screenshot tool for Wayland that uses TUI to configure screenshot options.
 
 ## Usage
 
-Just type `wl-termshot` and you can start taking screenshot! Screenshots would be saved to $GRIM_DEFAULT_DIR in the case that `temporary` is not set.
+Just type `wl-termshot` and you can start taking screenshot! Screenshots would be saved to $WL_TERMSHOT_DIR, then $GRIM_DEFAULT_DIR if the previous is not set, then the picture directory (usually /home/user/Pictures/), in the case that `temporary` is not set.
 
 ## Features
 - Select a specific area to take screenshot
@@ -60,4 +60,3 @@ windowrule = size 700 350,class:wl-termshot.floating # Set size
 This is my personal project (just for personal use). If you find wl-termshot useful or you find a issue inside this tool, freely consider contributing through issues and pull requests. 
 ## License
 MIT License.
-
