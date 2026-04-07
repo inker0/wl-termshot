@@ -146,6 +146,10 @@ fn main() {
     }
 }
 
+fn get_picture_dir() -> Option<String> {
+    dirs::picture_dir().map(|b| b.to_str().expect("Expected UTF-8 path").to_string())
+}
+
 fn run_command(state: State) {
     let mut file_name = state.file_name;
     if file_name.trim().is_empty() {
@@ -164,7 +168,11 @@ fn run_command(state: State) {
     }
 
     let grim_dir_env = if !state.temp {
-        std::env::var("GRIM_DEFAULT_DIR").unwrap_or(".".to_string())
+        std::env::var("WL_TERMSHOT_DIR")
+            .or_else(|_| std::env::var("GRIM_DEFAULT_DIR"))
+            .ok()
+            .or_else(get_picture_dir)
+            .unwrap_or(".".to_string())
     } else {
         temp_dir().display().to_string()
     };
